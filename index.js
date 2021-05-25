@@ -42,11 +42,11 @@ const createTimeOutEvent = (employee, timeStamp) => {
 }
 
 const hoursWorkedOnDate = (employee, targetDate) => {
-    let inEvent = employee.timeInEvents.find( (e) => {
-        return e.date === targetDate
+    let inEvent = employee.timeInEvents.find( (event) => {
+        return event.date === targetDate
     });
-    let outEvent = employee.timeOutEvents.find( (e) => {
-        return e.date === targetDate
+    let outEvent = employee.timeOutEvents.find( (event) => {
+        return event.date === targetDate
     });
     
     return (outEvent.hour - inEvent.hour) / 100
@@ -57,8 +57,8 @@ const wagesEarnedOnDate = (employee, targetDate) => {
 };
 
 const allWagesFor = (employee) => {
-    let workedDates = employee.timeInEvents.map( (e) => {
-        return e.date
+    let workedDates = employee.timeInEvents.map( (event) => {
+        return event.date
     })
     let totalWagesEarned = workedDates.reduce( (tally, dates) => {
         return tally + wagesEarnedOnDate(employee, dates)
