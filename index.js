@@ -27,3 +27,54 @@ const createTimeInEvent = (employee, timeStamp) => {
     });
     return employee
 }
+
+const createTimeOutEvent = (employee, timeStamp) => {
+    let dateTime = timeStamp.split(" ");
+    let outHour = parseInt(dateTime[1], 10);
+    let outDate = dateTime[0];
+
+    employee.timeOutEvents.push({
+        type: "TimeOut",
+        hour: outHour,
+        date: outDate
+    });
+    return employee
+}
+
+const hoursWorkedOnDate = (employee, targetDate) => {
+    let inEvent = employee.timeInEvents.find( (e) => {
+        return e.date === targetDate
+    });
+    let outEvent = employee.timeOutEvents.find( (e) => {
+        return e.date === targetDate
+    });
+    
+    return (outEvent.hour - inEvent.hour) / 100
+}; 
+
+const wagesEarnedOnDate = (employee, targetDate) => {
+    return hoursWorkedOnDate(employee, targetDate) * employee.payPerHour
+};
+
+const allWagesFor = (employee) => {
+    let workedDates = employee.timeInEvents.map( (e) => {
+        return e.date
+    })
+    let totalWagesEarned = workedDates.reduce( (tally, dates) => {
+        return tally + wagesEarnedOnDate(employee, dates)
+    }, 0)
+
+        return totalWagesEarned
+};
+
+const findEmployeeByFirstName = (srcArray, firstName) => {
+    return srcArray.find( (emp) => {
+        return emp.firstName === firstName
+    })
+};
+
+const calculatePayroll = (arrayOfEmployees) => {
+    return arrayOfEmployees.reduce( (tally, employee) => {
+        return tally + allWagesFor(employee)
+    }, 0)
+}
